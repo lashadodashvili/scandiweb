@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+import './App.css';
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Redirect } from 'react-router-dom';
+import Header from './components/Header';
+import ProdactList from './components/ProductsList'
+import ProductDetails from './components/ProductDetails'
+import { CurrencyContext } from './CurrencyContext';
+import Cart from './components/Cart'
+
+
+
+// import { useQuery, gql } from '@apollo/client';
+
+// const getCurrencies = gql`
+//   query getCurrencies{
+//       currencies {
+//         label
+//         symbol
+//       }
+//     }
+// `;
+function App(props) {
+  const [currency, setCurrency] = useState("USD");
+
+
+
+  return (<div>
+    <CurrencyContext.Provider value={{ currency, setCurrency }}>
+      <BrowserRouter>
+
+        <Header />
+        <Routes>
+
+          <Route exact path='/' element={<ProdactList />}>
+            <Route path='products/:category' element={<ProdactList />} />
+          </Route>
+          <Route path='product-details/:productID' element={<ProductDetails />} />
+          <Route path='cart' element={<Cart />} />
+        </Routes>
+
+      </BrowserRouter>
+    </CurrencyContext.Provider>
+  </div>)
 }
 
 export default App;
